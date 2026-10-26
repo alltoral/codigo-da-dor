@@ -220,11 +220,27 @@ body.modal-aberto{overflow:hidden}
 .credito{display:block;text-align:center;margin:28px auto 0;padding:8px 0;font-size:12px;letter-spacing:.04em;color:var(--mudo);text-decoration:none;opacity:.5;border:0}
 .credito b{font-family:inherit;font-weight:600;letter-spacing:.04em;color:inherit}
 .credito:hover{opacity:.8}
+
+/* Tutorial em vídeo */
+.tutorial{display:flex;align-items:center;gap:16px;width:100%;padding:12px;border-radius:12px;background:var(--carvao-2);border:1px solid rgba(212,160,23,.45);color:var(--texto,#F6F3EC);font:inherit;text-align:left;cursor:pointer}
+.tutorial:hover{border-color:var(--ambar)}
+.tutorial .thumb{position:relative;flex:none;width:96px;height:128px;border-radius:8px;overflow:hidden;background:#141414}
+.tutorial .thumb img{width:100%;height:100%;object-fit:cover;object-position:50% 25%}
+.tutorial .thumb i{position:absolute;inset:0;margin:auto;width:44px;height:44px;border-radius:50%;background:var(--ambar);display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.tutorial b{display:block;font-size:17px;line-height:1.25;color:#F6F3EC}
+.tutorial span{display:block;font-size:14px;color:var(--apoio);margin-top:4px}
+.tutorial em{display:inline-block;margin-top:10px;font-style:normal;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ambar)}
+.player{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:#000}
+.player.on{display:flex}
+.player video{width:100%;height:100%;max-height:100vh;object-fit:contain;background:#000}
+.player-fechar{position:absolute;top:calc(14px + env(safe-area-inset-top, 0px));right:14px;z-index:2;width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.55);color:#fff;font-size:26px;line-height:1;cursor:pointer}
+body.video-aberto{overflow:hidden}
 </style>
 </head>
 <body>
 
 <main class="app" id="app" aria-live="polite"></main>
+<div class="player" id="player" role="dialog" aria-modal="true" aria-label="Passo a passo do teste" aria-hidden="true"><button class="player-fechar" type="button" aria-label="Fechar vídeo">×</button><video id="player-video" controls playsinline preload="none"></video></div>
 
 <script>
 (function(){
@@ -274,45 +290,45 @@ body.modal-aberto{overflow:hidden}
   var TESTES = {
     t1:{
       n:1, nome:'Na cama', estrutura:'Flexores de quadril',
-      titulo:'Abraça um joelho. Olha a outra perna.',
+      titulo:'Abrace as pernas. Deixe uma cair.',
       passos:[
-        'Deite de costas bem na beirada de uma cama firme, com o quadril perto da borda.',
-        'Abrace um joelho e puxe firme contra o peito.',
-        'Deixe a outra perna relaxar e cair para fora do colchão, sem forçar.',
-        'Observe por 10 segundos. Depois troque de lado.'
+        'Sente na ponta de uma cama firme.',
+        'Deite e abrace as duas pernas contra o peito.',
+        'Estique uma perna devagar e deixe ela cair, sem forçar.',
+        'Volte e repita do outro lado, comparando os dois.'
       ],
-      passou:'A perna livre desce relaxada abaixo da linha do colchão e a lombar continua apoiada.',
-      reprovou:'A perna fica suspensa no ar, o joelho estica sozinho ou a lombar arqueia.',
+      passou:'A perna desce totalmente, abaixo da linha da cama, e o joelho dobra naturalmente.',
+      reprovou:'A perna não desce totalmente ou o joelho fica esticado.',
       pista:'Seu quadril pode estar puxando a sua lombar.',
       porque:'Flexores de quadril encurtados puxam a pelve para frente a cada passo. A lombar compensa e paga a conta.',
       nos:[3,4], ex:'e1'
     },
     t2:{
       n:2, nome:'Na parede', estrutura:'Coluna torácica e ombros',
-      titulo:'Costas na parede. Sobe os braços.',
+      titulo:'Coluna na parede. Braços para cima.',
       passos:[
-        'Encoste calcanhares, bumbum, costas e cabeça na parede.',
-        'Abra os braços em W: cotovelos dobrados a 90 graus, encostados na parede.',
-        'Deslize as mãos para cima, formando um Y, tentando manter punhos e cotovelos colados.',
-        'Repita 3 vezes devagar e observe.'
+        'Encoste toda a coluna na parede: bumbum, costas e cabeça.',
+        'Abra os braços a 90 graus, com os cotovelos encostados na parede.',
+        'Estique os braços para cima e volte, devagar.',
+        'Faça sem desencostar os cotovelos nem a coluna.'
       ],
-      passou:'Punhos e cotovelos ficam na parede o tempo todo e a lombar não descola.',
-      reprovou:'O cotovelo ou o punho descola, ou você precisa estufar a barriga e arquear a lombar para subir.',
+      passou:'Você sobe e desce os braços com os cotovelos e a coluna encostados o tempo todo.',
+      reprovou:'Não consegue levantar os braços, o cotovelo desencosta da parede ou a coluna projeta para frente.',
       pista:'A parte de cima pode estar travada.',
       porque:'Quando a coluna torácica não se move, o pescoço e os ombros trabalham em sobrecarga para compensar.',
       nos:[1,3], ex:'e2'
     },
     t3:{
-      n:3, nome:'Nos dois pés', estrutura:'Estabilidade do glúteo',
-      titulo:'Os dois joelhos. Agacha devagar.',
+      n:3, nome:'No degrau', estrutura:'Estabilidade do glúteo',
+      titulo:'Um pé no degrau. Desce devagar.',
       passos:[
-        'Fique em pé com os dois pés no chão e as mãos cruzadas à frente do peito.',
-        'Coloque as pernas levemente à frente e realize uma flexão de joelhos e quadris, devagar, como se fosse sentar num banco alto. Desça pouco.',
-        'Observe os dois joelhos em frente a um espelho ou filmando.',
-        'Faça 3 vezes.'
+        'Suba num degrau baixo, de frente.',
+        'Deixe uma perna à frente, fora do degrau, e faça 5 abaixamentos devagar com a perna de apoio.',
+        'Repita do outro lado.',
+        'Observe o joelho e o quadril da perna de apoio, no espelho ou filmando.'
       ],
-      passou:'Os dois joelhos ficam alinhados com o segundo dedo de cada pé e o tronco permanece reto.',
-      reprovou:'Um ou os dois joelhos caem para dentro, tremem muito ou o tronco inclina para o lado.',
+      passou:'O joelho de apoio fica alinhado com o pé e o quadril se mantém nivelado.',
+      reprovou:'O joelho entra para dentro ou o quadril cede para o lado.',
       pista:'O lado do bumbum pode não estar segurando.',
       porque:'Sem o glúteo médio estabilizando o quadril, o impacto vai direto para joelho, quadril e base da lombar.',
       nos:[4,5], ex:'e3'
@@ -522,7 +538,7 @@ body.modal-aberto{overflow:hidden}
         '<h3>Prepare em 1 minuto</h3>'+
         '<ul class="lista">'+
           '<li>'+check+'<span>Roupa leve e um espaço livre de 2 x 2 metros.</span></li>'+
-          '<li>'+check+'<span>Uma cama firme e uma parede lisa.</span></li>'+
+          '<li>'+check+'<span>Uma cama firme, uma parede lisa e um degrau baixo.</span></li>'+
           '<li>'+check+'<span>Celular apoiado para se filmar, ou um espelho. Ajuda muito a ver o detalhe.</span></li>'+
           '<li>'+check+'<span>Faça devagar. Sentiu dor? Pare. Isso também é informação.</span></li>'+
         '</ul>'+
@@ -533,20 +549,16 @@ body.modal-aberto{overflow:hidden}
     '</section>';
   };
 
-  var LEGENDA_VIDEO = {
-    t1:'Animação: deitado na beira da cama, abraçando um joelho; a outra perna pende para fora do colchão e relaxa abaixo da linha do colchão',
-    t2:'Animação: de pé com as costas na parede, os braços deslizam de W para Y e voltam, com cotovelos e punhos colados na parede',
-    t3:'Animação: em pé sobre os dois pés, braços cruzados no peito, agachamento curto com os dois joelhos alinhados aos pés'
-  };
-  function videoTeste(id){
-    return '<video src="assets/teste-'+id+'.mp4" poster="assets/teste-'+id+'.jpg" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-label="'+LEGENDA_VIDEO[id]+'"></video>';
+  var PASTA_TUTORIAL = 'assets/';
+  function cardTutorial(id){
+    return '<button class="tutorial" type="button" data-tutorial="'+id+'"><span class="thumb"><img src="'+PASTA_TUTORIAL+'tutorial-'+id+'.jpg" alt=""><i><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="#121212"/></svg></i></span><span><b>Assista ao passo a passo deste teste</b><span>O Douglas mostra como fazer e o que observar.</span><em>Vídeo · 1 min</em></span></button>';
   }
   function telaTeste(id){
     var t = TESTES[id];
     return topo()+
     '<section class="pilha-l entra">'+
       '<div class="teste-cab"><span class="rotulo">Teste '+t.n+' de 3 · '+t.nome+'</span><h2>'+t.titulo+'</h2><p class="apoio">Avalia: '+t.estrutura+'</p></div>'+
-      '<div class="figura video">'+videoTeste(id)+'</div>'+
+      cardTutorial(id)+
       '<ol class="passos-lista">'+t.passos.map(function(p){return '<li><span>'+p+'</span></li>';}).join('')+'</ol>'+
       '<div class="pilha">'+
         '<div class="criterio"><span class="rotulo">Passou se</span><p>'+t.passou+'</p></div>'+
@@ -720,6 +732,19 @@ body.modal-aberto{overflow:hidden}
   }
 
   desenhar();
+
+  /* Tutorial em vídeo em tela cheia */
+  (function(){
+    var pl = document.getElementById('player'), v = document.getElementById('player-video'), ultimo = null;
+    if (!pl) return;
+    function abrir(id){ ultimo = document.activeElement; v.src = PASTA_TUTORIAL+'tutorial-'+id+'.mp4'; v.poster = PASTA_TUTORIAL+'tutorial-'+id+'.jpg';
+      pl.classList.add('on'); pl.setAttribute('aria-hidden','false'); document.body.classList.add('video-aberto');
+      var pr = v.play(); if (pr && pr.catch) pr.catch(function(){}); pl.querySelector('.player-fechar').focus(); }
+    function fechar(){ v.pause(); v.removeAttribute('src'); v.load(); pl.classList.remove('on'); pl.setAttribute('aria-hidden','true'); document.body.classList.remove('video-aberto'); if (ultimo) ultimo.focus(); }
+    document.addEventListener('click', function(e){ var b = e.target.closest && e.target.closest('[data-tutorial]'); if (b){ e.preventDefault(); abrir(b.getAttribute('data-tutorial')); } });
+    pl.querySelector('.player-fechar').addEventListener('click', fechar);
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && pl.classList.contains('on')) fechar(); });
+  })();
 })();
 </script>
 </body>
