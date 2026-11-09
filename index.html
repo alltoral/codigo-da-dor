@@ -254,6 +254,29 @@ body.video-aberto{overflow:hidden}
   var CHAVE = 'codigo-da-dor-v1';
 
   var estado = carregar() || novo();
+
+  /* Envia o contato para o e-mail do Douglas (FormSubmit). Não bloqueia o app se falhar. */
+  var EMAIL_LEADS = 'douglastoral@gmail.com';
+  function enviarLead(){
+    try {
+      var r = function(k){ var v = estado.t[k]; return v==='reprovou' ? 'Reprovou' : (v==='dor' ? 'Parou por dor' : (v==='passou' ? 'Passou' : 'Não fez')); };
+      var dados = {
+        _subject: 'Novo contato do Código da Dor: ' + (estado.nome || estado.email),
+        _template: 'table', _captcha: 'false',
+        Nome: estado.nome || '(não informado)',
+        'E-mail': estado.email,
+        WhatsApp: estado.whats || '(não informado)',
+        'Onde dói': estado.regiao || '(não informado)',
+        'Há quanto tempo': estado.tempo || '(não informado)',
+        'Teste 1 · Na cama': r('t1'),
+        'Teste 2 · Na parede': r('t2'),
+        'Teste 3 · No degrau': r('t3'),
+        'Aceitou receber conteúdos': estado.lgpd ? 'Sim' : 'Não',
+        Data: new Date().toLocaleString('pt-BR')
+      };
+      fetch('https://formsubmit.co/ajax/' + EMAIL_LEADS, { method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }, body: JSON.stringify(dados) }).catch(function(){});
+    } catch(e){}
+  }
   function novo(){ return { tela:'inicio', regiao:'', tempo:'', tentou:[], alertas:[], termo:false, t:{}, nome:'', email:'', whats:'', lgpd:false, dias:[] }; }
   function carregar(){ try{ var s = localStorage.getItem(CHAVE); return s ? JSON.parse(s) : null; }catch(e){ return null; } }
   function salvar(){ try{ localStorage.setItem(CHAVE, JSON.stringify(estado)); }catch(e){} }
@@ -725,7 +748,7 @@ body.video-aberto{overflow:hidden}
       estado.nome = String(fd.get('nome')||'').trim(); estado.whats = String(fd.get('whats')||'').trim(); estado.lgpd = !!fd.get('lgpd');
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){ er.textContent='Confira o e-mail. Ele precisa ter @ e um domínio, como nome@email.com.'; er.hidden=false; salvar(); return; }
       if(!estado.lgpd){ er.textContent='Marque a caixa de consentimento para receber o resultado.'; er.hidden=false; salvar(); return; }
-      estado.email = em; ir('resultado'); });
+      estado.email = em; enviarLead(); ir('resultado'); });
     app.querySelectorAll('[data-dia]').forEach(function(c){ c.addEventListener('change', function(){
       var d = +c.getAttribute('data-dia'); var i = estado.dias.indexOf(d);
       if (c.checked && i<0) estado.dias.push(d); if(!c.checked && i>-1) estado.dias.splice(i,1);
